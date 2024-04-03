@@ -377,12 +377,12 @@ examples_flax_job = CircleCIJob(
 hub_job = CircleCIJob(
     "hub",
     additional_env={"HUGGINGFACE_CO_STAGING": True},
+    docker_image=[{"image":"huggingface/transformers-consistency"}], # TODO do we really need torch for that job? torch-light?  
+    install_steps=["uv venv", "uv pip install -e ."],
     install_steps=[
         "sudo apt-get -y update && sudo apt-get install git-lfs",
         'git config --global user.email "ci@dummy.com"',
         'git config --global user.name "ci"',
-        "pip install --upgrade --upgrade-strategy eager pip",
-        "pip install -U --upgrade-strategy eager .[torch,sentencepiece,testing,vision]",
     ],
     marker="is_staging_test",
     pytest_num_workers=1,
@@ -419,10 +419,8 @@ exotic_models_job = CircleCIJob(
 
 repo_utils_job = CircleCIJob(
     "repo_utils",
-    install_steps=[
-        "pip install --upgrade --upgrade-strategy eager pip",
-        "pip install -U --upgrade-strategy eager .[quality,testing,torch]",
-    ],
+    docker_image=[{"image":"huggingface/transformers-consistency"}], # TODO do we really need torch for that job? torch-light?  
+    install_steps=["uv venv", "uv pip install -e ."],
     parallelism=None,
     pytest_num_workers=1,
     resource_class="large",
