@@ -378,8 +378,8 @@ hub_job = CircleCIJob(
     "hub",
     additional_env={"HUGGINGFACE_CO_STAGING": True},
     docker_image=[{"image":"huggingface/transformers-consistency"}], # TODO do we really need torch for that job? torch-light?  
-    install_steps=["uv venv", "uv pip install -e ."],
     install_steps=[
+        "uv venv", "uv pip install -e .",
         "sudo apt-get -y update && sudo apt-get install git-lfs",
         'git config --global user.email "ci@dummy.com"',
         'git config --global user.name "ci"',
