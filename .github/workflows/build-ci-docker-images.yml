@@ -14,14 +14,14 @@ on:
     - cron: "17 0 * * *"
 
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
 
 jobs:
   build:
     runs-on: ubuntu-22.04
-    concurrency:
-      group: staging_environment
-      cancel-in-progress: true
-
 
     strategy:
       matrix:
