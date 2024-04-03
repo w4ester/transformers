@@ -14,6 +14,5 @@ RUN uv pip install --no-cache-dir "transformers[sklearn,torch,testing,sentencepi
 
 RUN pip uninstall -y transformers
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN apt-get autoremove  --purge -y cmake g++
 RUN pip cache remove "nvidia-*"
 RUN pip cache remove triton
