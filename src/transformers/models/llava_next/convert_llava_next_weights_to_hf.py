@@ -27,8 +27,6 @@ import argparse
 import glob
 import json
 from pathlib import Path
-
-import requests
 import torch
 from accelerate import init_empty_weights
 from huggingface_hub import hf_hub_download, snapshot_download
@@ -44,6 +42,7 @@ from transformers import (
     LlavaNextImageProcessor,
     LlavaNextProcessor,
 )
+from security import safe_requests
 
 
 KEYS_TO_MODIFY_MAPPING = {
@@ -87,7 +86,7 @@ def convert_state_dict_to_hf(state_dict):
 
 def load_image():
     url = "https://github.com/haotian-liu/LLaVA/blob/1a91fc274d7c35a9b50b3cb29c4247ae5837ce39/images/llava_v1_5_radar.jpg?raw=true"
-    image = Image.open(requests.get(url, stream=True).raw)
+    image = Image.open(safe_requests.get(url, stream=True).raw)
     return image
 
 
@@ -277,7 +276,7 @@ def convert_llava_to_hf(model_id, pytorch_dump_folder_path, push_to_hub=False):
     # verify batched generation
     print("Batched generation...")
     url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-    cats_image = Image.open(requests.get(url, stream=True).raw)
+    cats_image = Image.open(safe_requests.get(url, stream=True).raw)
 
     inputs = processor(
         images=[image, cats_image],
