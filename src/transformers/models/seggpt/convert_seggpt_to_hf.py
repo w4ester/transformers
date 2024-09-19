@@ -19,13 +19,12 @@ URL: https://github.com/baaivision/Painter/tree/main/SegGPT
 
 
 import argparse
-
-import requests
 import torch
 from PIL import Image
 
 from transformers import SegGptConfig, SegGptForImageSegmentation, SegGptImageProcessor
 from transformers.utils import logging
+from security import safe_requests
 
 
 logging.set_verbosity_info()
@@ -101,9 +100,9 @@ def prepare_input():
         "https://raw.githubusercontent.com/baaivision/Painter/main/SegGPT/SegGPT_inference/examples/hmbb_1_target.png"
     )
 
-    image_input = Image.open(requests.get(image_input_url, stream=True).raw)
-    image_prompt = Image.open(requests.get(image_prompt_url, stream=True).raw)
-    mask_prompt = Image.open(requests.get(mask_prompt_url, stream=True).raw)
+    image_input = Image.open(safe_requests.get(image_input_url, stream=True).raw)
+    image_prompt = Image.open(safe_requests.get(image_prompt_url, stream=True).raw)
+    mask_prompt = Image.open(safe_requests.get(mask_prompt_url, stream=True).raw)
 
     return image_input, image_prompt, mask_prompt
 
