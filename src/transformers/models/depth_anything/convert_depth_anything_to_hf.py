@@ -165,7 +165,7 @@ def rename_key(dct, old, new):
 # We will verify our results on an image of cute cats
 def prepare_img():
     url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-    im = Image.open(requests.get(url, stream=True).raw)
+    im = Image.open(requests.get(url, stream=True, timeout=60).raw)
     return im
 
 
@@ -221,7 +221,7 @@ def convert_dpt_checkpoint(model_name, pytorch_dump_folder_path, push_to_hub, ve
     )
 
     url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-    image = Image.open(requests.get(url, stream=True).raw)
+    image = Image.open(requests.get(url, stream=True, timeout=60).raw)
 
     pixel_values = processor(image, return_tensors="pt").pixel_values
 

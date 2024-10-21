@@ -87,7 +87,7 @@ def convert_state_dict_to_hf(state_dict):
 
 def load_image():
     url = "https://github.com/haotian-liu/LLaVA/blob/1a91fc274d7c35a9b50b3cb29c4247ae5837ce39/images/llava_v1_5_radar.jpg?raw=true"
-    image = Image.open(requests.get(url, stream=True).raw)
+    image = Image.open(requests.get(url, stream=True, timeout=60).raw)
     return image
 
 
@@ -277,7 +277,7 @@ def convert_llava_to_hf(model_id, pytorch_dump_folder_path, push_to_hub=False):
     # verify batched generation
     print("Batched generation...")
     url = "http://images.cocodataset.org/val2017/000000039769.jpg"
-    cats_image = Image.open(requests.get(url, stream=True).raw)
+    cats_image = Image.open(requests.get(url, stream=True, timeout=60).raw)
 
     inputs = processor(
         images=[image, cats_image],
