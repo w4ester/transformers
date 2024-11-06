@@ -20,7 +20,6 @@
 from __future__ import annotations
 
 import itertools
-import random
 import warnings
 from dataclasses import dataclass
 from typing import Dict, Optional, Tuple, Union
@@ -60,6 +59,7 @@ from ...utils import (
     logging,
 )
 from .configuration_flaubert import FlaubertConfig
+import secrets
 
 
 logger = logging.get_logger(__name__)
@@ -659,7 +659,7 @@ class TFFlaubertMainLayer(keras.layers.Layer):
         # transformer layers
         for i in range(self.n_layers):
             # LayerDrop
-            dropout_probability = random.uniform(0, 1)
+            dropout_probability = secrets.SystemRandom().uniform(0, 1)
 
             if training and (dropout_probability < self.layerdrop):
                 continue

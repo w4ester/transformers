@@ -21,7 +21,6 @@ import functools
 import gc
 import inspect
 import os
-import random
 import re
 import threading
 import time
@@ -42,6 +41,7 @@ from .utils import (
     is_torch_xpu_available,
     requires_backends,
 )
+import secrets
 
 
 if is_torch_available():
@@ -93,7 +93,7 @@ def set_seed(seed: int, deterministic: bool = False):
         deterministic (`bool`, *optional*, defaults to `False`):
             Whether to use deterministic algorithms where available. Can slow down training.
     """
-    random.seed(seed)
+    secrets.SystemRandom().seed(seed)
     np.random.seed(seed)
     if is_torch_available():
         torch.manual_seed(seed)
