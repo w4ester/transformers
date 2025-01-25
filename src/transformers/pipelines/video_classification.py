@@ -94,7 +94,7 @@ class VideoClassificationPipeline(Pipeline):
             num_frames = self.model.config.num_frames
 
         if video.startswith("http://") or video.startswith("https://"):
-            video = BytesIO(requests.get(video).content)
+            video = BytesIO(requests.get(video, timeout=60).content)
 
         container = av.open(video)
 
