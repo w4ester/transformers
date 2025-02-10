@@ -17,7 +17,6 @@
 import collections
 import logging
 import math
-import random
 from abc import ABC, abstractmethod
 from copy import deepcopy
 from dataclasses import dataclass
@@ -42,6 +41,7 @@ from ...utils import (
     add_start_docstrings_to_model_forward,
     replace_return_docstrings,
 )
+import secrets
 
 
 logger = logging.getLogger(__name__)
@@ -1131,7 +1131,7 @@ class RelativePositionBiasBase(nn.Module, ABC):
         memory_position = positions[:, None, :]
         relative_position = memory_position - context_position
         if self.augmentation and self.training:
-            relative_position *= random.uniform(*AUGMENTATION_RANGE)
+            relative_position *= secrets.SystemRandom().uniform(*AUGMENTATION_RANGE)
         relative_position *= self.scaling_factor
 
         return relative_position.to(torch.long)
