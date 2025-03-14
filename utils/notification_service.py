@@ -22,11 +22,10 @@ import re
 import sys
 import time
 from typing import Dict, List, Optional, Union
-
-import requests
 from get_ci_error_statistics import get_jobs
 from get_previous_daily_ci import get_last_daily_ci_reports
 from slack_sdk import WebClient
+from security import safe_requests
 
 
 client = WebClient(token=os.environ["CI_SLACK_BOT_TOKEN"])
@@ -904,7 +903,7 @@ if __name__ == "__main__":
         # Retrieve the PR title and author login to complete the report
         commit_number = ci_url.split("/")[-1]
         ci_detail_url = f"https://api.github.com/repos/{repository_full_name}/commits/{commit_number}"
-        ci_details = requests.get(ci_detail_url).json()
+        ci_details = safe_requests.get(ci_detail_url).json()
         ci_author = ci_details["author"]["login"]
 
         merged_by = None
@@ -913,7 +912,7 @@ if __name__ == "__main__":
         if len(numbers) > 0:
             pr_number = numbers[0]
             ci_detail_url = f"https://api.github.com/repos/{repository_full_name}/pulls/{pr_number}"
-            ci_details = requests.get(ci_detail_url).json()
+            ci_details = safe_requests.get(ci_detail_url).json()
 
             ci_author = ci_details["user"]["login"]
             ci_url = f"https://github.com/{repository_full_name}/pull/{pr_number}"
